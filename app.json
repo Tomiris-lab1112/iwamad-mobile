@@ -2,6 +2,7 @@
   "expo": {
     "name": "iwamad-mobile",
     "slug": "iwamad-mobile",
+    "experiments": { "baseUrl": "/iwamad-mobile" },
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
