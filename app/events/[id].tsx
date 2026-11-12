@@ -1,10 +1,49 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
-import { events } from '../../src/data/events';
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { useEvents } from '../../src/hooks/useEvents';
 
 export default function EventScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const event = events.find((e) => e.id === Number(id));
+
+  const {
+    data,
+    isPending,
+    isError,
+    error,
+    refetch,
+  } = useEvents();
+
+  if (isPending) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" />
+        <Text>Loading events</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View style={styles.center}>
+        <Text>Could not load events</Text>
+        <Text>{error.message}</Text>
+        <Pressable
+          onPress={() => refetch()}
+          style={styles.retryButton}
+        >
+          <Text style={styles.retryText}>Try again</Text>
+        </Pressable>
+      </View>
+    );
+  }
+
+  const event = data?.find((e) => e.id === Number(id));
 
   if (!event) {
     return (
@@ -28,6 +67,35 @@ export default function EventScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: '#fff' },
-  title: { fontSize: 24, fontWeight: '600', marginBottom: 8 },
+  container: {
+  flex: 1,
+  padding: 16,
+  paddingTop: 110,
+  backgroundColor: '#fff',
+}, 
+  center: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  retryButton: {
+    minHeight: 44,
+    padding: 12,
+    marginTop: 12,
+    backgroundColor: '#2563eb',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  retryText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
 });
