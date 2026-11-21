@@ -64,7 +64,7 @@ export default function EventsScreen() {
       />
 
       <Text style={styles.hint}>
-        Long-press an event to save it. Saved: {savedIds.length}
+        Swipe or long-press an event to save it. Saved: {savedIds.length}
       </Text>
 
       <FlatList
