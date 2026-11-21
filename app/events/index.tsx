@@ -11,9 +11,10 @@ import {
 } from 'react-native';
 import EventRow from '../../src/components/EventRow';
 import { useEvents } from '../../src/hooks/useEvents';
+import { useSavedIds } from '../../src/hooks/useSavedIds';
 
 export default function EventsScreen() {
-  const [savedIds, setSavedIds] = useState<number[]>([]);
+  const { savedIds, toggleSaved } = useSavedIds();
   const [query, setQuery] = useState('');
 
   const {
@@ -28,12 +29,6 @@ export default function EventsScreen() {
   const visible = (data ?? []).filter((e) =>
     e.title.toLowerCase().includes(query.toLowerCase())
   );
-
-  function toggleSaved(id: number) {
-    setSavedIds((ids) =>
-      ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]
-    );
-  }
 
   if (isPending) {
     return (
@@ -93,11 +88,11 @@ export default function EventsScreen() {
 
 const styles = StyleSheet.create({
   container: {
-  flex: 1,
-  padding: 16,
-  paddingTop: 110,
-  backgroundColor: '#fff',
-},
+    flex: 1,
+    padding: 16,
+    paddingTop: 110,
+    backgroundColor: '#fff',
+  },
   center: {
     flex: 1,
     justifyContent: 'center',

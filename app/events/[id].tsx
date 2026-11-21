@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import { useEvents } from '../../src/hooks/useEvents';
+import HolidayNote from '../../src/components/HolidayNote';
 
 export default function EventScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -58,8 +59,12 @@ export default function EventScreen() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: event.title }} />
+
       <Text style={styles.title}>{event.title}</Text>
+
       <Text>Date: {event.date}</Text>
+      <HolidayNote date={event.date} />
+
       <Text>Place: {event.place}</Text>
       <Text>Seats: {event.seats}</Text>
     </View>
@@ -68,11 +73,11 @@ export default function EventScreen() {
 
 const styles = StyleSheet.create({
   container: {
-  flex: 1,
-  padding: 16,
-  paddingTop: 110,
-  backgroundColor: '#fff',
-}, 
+    flex: 1,
+    padding: 16,
+    paddingTop: 110,
+    backgroundColor: '#fff',
+  },
   center: {
     flex: 1,
     justifyContent: 'center',
