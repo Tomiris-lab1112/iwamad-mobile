@@ -2,12 +2,15 @@ import { Stack, useLocalSearchParams } from 'expo-router';
 import {
   ActivityIndicator,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+
 import { useEvents } from '../../src/hooks/useEvents';
 import HolidayNote from '../../src/components/HolidayNote';
+import ChatPanel from '../../src/components/ChatPanel';
 
 export default function EventScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -34,6 +37,7 @@ export default function EventScreen() {
       <View style={styles.center}>
         <Text>Could not load events</Text>
         <Text>{error.message}</Text>
+
         <Pressable
           onPress={() => refetch()}
           style={styles.retryButton}
@@ -57,7 +61,11 @@ export default function EventScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
+    >
       <Stack.Screen options={{ title: event.title }} />
 
       <Text style={styles.title}>{event.title}</Text>
@@ -67,13 +75,21 @@ export default function EventScreen() {
 
       <Text>Place: {event.place}</Text>
       <Text>Seats: {event.seats}</Text>
-    </View>
+
+      <ChatPanel
+        eventId={event.id}
+        eventTitle={event.title}
+      />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  scroll: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  container: {
     padding: 16,
     paddingTop: 110,
     backgroundColor: '#fff',

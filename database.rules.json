@@ -1,0 +1,15 @@
+{
+  "rules": {
+    "chats": {
+      "$eventId": {
+        ".read": true,
+        "messages": {
+          "$messageId": {
+            ".write": "!data.exists()",
+            ".validate": "newData.hasChildren(['author', 'text', 'sentAt', 'deviceId']) && newData.child('text').isString() && newData.child('text').val().length > 0 && newData.child('text').val().length <= 200"
+          }
+        }
+      }
+    }
+  }
+}
